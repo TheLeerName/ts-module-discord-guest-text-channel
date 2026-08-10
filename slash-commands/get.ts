@@ -8,8 +8,7 @@ import * as Discord from "discord.js";
 export const slashCommandGetName = "guest-text-channel-get";
 
 export default () => new SlashCommand()
-.setVersion(2)
-.setCooldown(5000)
+.setVersion(1)
 .setName(slashCommandGetName)
 .setDescription(`Sends "${Module.name}" module parameters of this server`)
 .setDescriptionLocalization("ru", `Отправляет параметры модуля "${Module.name}" этого сервера`)

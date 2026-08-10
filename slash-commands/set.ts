@@ -7,8 +7,7 @@ import * as Discord from "discord.js";
 
 export default () => {
 	const c = new SlashCommand()
-	.setVersion(2)
-	.setCooldown(5000)
+	.setVersion(1)
 	.setName("guest-text-channel-set")
 	.setDescription(`Changes "${Module.name}" module parameters of this server`)
 	.setDescriptionLocalization("ru", `Изменяет параметры модуля "${Module.name}" этого сервера`)

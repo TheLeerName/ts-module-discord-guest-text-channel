@@ -6,8 +6,8 @@ import SlashCommandSet from "./slash-commands/set.js";
 
 import * as Discord from "discord.js";
 
-class DiscordGuildGuestTextChannelModule {
-	readonly name = "discord-guild-guest-text-channel" as const;
+class DiscordGuestTextChannelModule {
+	readonly name = "discord-guest-text-channel" as const;
 	readonly data: Data;
 	readonly log = Core.log.makeFunctions(this.name);
 
@@ -272,4 +272,4 @@ class DiscordGuildGuestTextChannelModule {
 		return result;
 	}
 }
-export default new DiscordGuildGuestTextChannelModule();
+export default new DiscordGuestTextChannelModule();
