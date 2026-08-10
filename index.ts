@@ -1,5 +1,5 @@
 import Core from "../../index.js";
-import DiscordModule from "../ts-module-discord/index.js";
+import DiscordModule from "../discord/index.js";
 import Data, { type GuildNonThreadTextBasedChannel } from "./data.js";
 import SlashCommandGet, { slashCommandGetName } from "./slash-commands/get.js";
 import SlashCommandSet from "./slash-commands/set.js";

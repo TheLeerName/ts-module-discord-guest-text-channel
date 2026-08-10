@@ -1,6 +1,6 @@
 import Core from "../../../index.js";
 import Module from "../index.js";
-import { SlashCommand } from "../../ts-module-discord/index.js";
+import { SlashCommand } from "../../discord/index.js";
 
 import * as Discord from "discord.js";
 
