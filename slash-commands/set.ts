@@ -74,7 +74,7 @@ export default () => {
 		catch(error) {
 			await interaction.editReply({embeds: [new Discord.EmbedBuilder()
 				.setTitle(`:x: Ошибка!`)
-				.setDescription(`\`\`\`\n${error.message}\n\`\`\``)
+				.setDescription(`\`\`\`\n${error instanceof Error ? error.message : error}\n\`\`\``)
 				.setColor("#dd2e44")
 				.setFooter({text: `Время обработки: ${Core.humanizeDuration(Date.now() - start)}`})
 			]});
