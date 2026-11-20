@@ -16,7 +16,7 @@ class DiscordGuestTextChannelModule {
 
 		DiscordModule
 			.once("addAuthorizationFields", a => a
-				.addPermissions(Discord.PermissionFlagsBits.ManageChannels, Discord.PermissionFlagsBits.ReadMessageHistory, Discord.PermissionFlagsBits.UseApplicationCommands, Discord.PermissionFlagsBits.ViewChannel)
+				.addPermissions(Discord.PermissionFlagsBits.ManageChannels, Discord.PermissionFlagsBits.ReadMessageHistory, Discord.PermissionFlagsBits.ViewChannel)
 				.addIntents(Discord.GatewayIntentBits.Guilds, Discord.GatewayIntentBits.GuildVoiceStates)
 				.addPartials(Discord.Partials.Channel))
 			.once("afterClientCreation", () => this.afterDiscordClientCreation());
