@@ -143,7 +143,7 @@ export class GuildStateManager extends Map<string, GuildState> {
 		}
 		// on left
 		if (oldState.channelId != null) {
-			const state = this.get(newState.guild.id);
+			const state = this.get(oldState.guild.id);
 			if (state == null) return;
 
 			await state.channels.onVoiceStateUpdate(oldState as Parameters<typeof state.channels.onVoiceStateUpdate>[0], false);
