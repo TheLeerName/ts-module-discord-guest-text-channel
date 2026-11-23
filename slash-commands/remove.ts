@@ -33,7 +33,7 @@ export default () => Module.discord.slashCommands.make("guest-channels-remove", 
 
 		const state = Module.guilds.createAndGet(interaction.guild);
 		state.channels.delete(channel.id);
-		await Module.data.save(true);
+		Module.data.needsSave = true;
 		await interaction.editReply({embeds: [new EmbedBuilder()
 			.setTitle(`:white_check_mark: Успешно!`)
 			.setColor("#77b255")

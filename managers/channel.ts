@@ -71,7 +71,7 @@ export class ChannelStateManager extends Map<string, ChannelState> {
 		if (state == null) return;
 
 		this.unset(state, "Channel was deleted");
-		Module.data.save(true);
+		Module.data.save();
 	}
 	async onVoiceStateUpdate(state: VoiceState & { channelId: string; member: GuildMember; }, isJoining: boolean) {
 		const channelState = this.get(state.channelId);
