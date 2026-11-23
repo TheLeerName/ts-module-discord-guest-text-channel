@@ -1,17 +1,12 @@
-import Core from "../../../index.js";
 import Module from "../index.js";
-import { SlashCommand } from "../../discord/index.js";
+import type { ChannelStateAvailable } from "../managers/channel.js";
+import { EmbedBuilder } from "discord.js";
 
-import * as Discord from "discord.js";
-
-/** That command name uses for slash command allowing/banning system, if this will be banned on server, module will stop functioning on this server */
-export const slashCommandGetName = "guest-text-channel-get";
-
-export default () => new SlashCommand()
+/** That command name used for slash command allowing/banning system, if this will be banned on server, module will stop functioning on this server */
+export default () => Module.discord.slashCommands.make("guest-channels-get", c => c
 .setVersion(1)
-.setName(slashCommandGetName)
-.setDescription(`Sends "${Module.name}" module parameters of this server`)
-.setDescriptionLocalization("ru", `Отправляет параметры модуля "${Module.name}" этого сервера`)
+.setDescription(`Sends all guest voice channels`)
+.setDescriptionLocalization("ru", `Отправляет все гостевые голосовые каналы`)
 .setChatInput(async(interaction) => {
 	if (!interaction.inCachedGuild()) return;
 
@@ -19,40 +14,31 @@ export default () => new SlashCommand()
 	await interaction.deferReply();
 
 	const args: any = {
-		guild: `${interaction.guild.name} (${interaction.guild.id})`,
-		user: `${interaction.user.username} (${interaction.user.id})`
+		guild: Module.discord.getGuildNameAndID(interaction.guild),
+		member: Module.discord.getGuildMemberNameAndID(interaction.member),
 	};
 	try {
-		const guildData = Module.data.getGuild(interaction.guild.id);
+		const state = Module.guilds.createAndGet(interaction.guild);
+		await Module.data.save();
 
-		args.voiceChannel = guildData.voiceChannel ? `<#${guildData.voiceChannel.id}>` : `*не установлено*`;
-		args.textChannel = guildData.voiceChannel ? `<#${guildData.voiceChannel.id}>` : `*не установлено*`;
-		args.voiceMembers = guildData.voiceMembers;
-		await interaction.editReply({embeds: [new Discord.EmbedBuilder()
-			.setTitle(`:notepad_spiral: Параметры модуля "${Module.name}" этого сервера`)
-			.setFields(
-				{
-					name: "Голосовой канал для отслеживания",
-					value: args.voiceChannel
-				},
-				{
-					name: "Текстовый канал для открытия/закрытия",
-					value: args.textChannel
-				}
-			)
+		const channels = Array.from(state.channels.values<ChannelStateAvailable>());
+		args.channels = channels.length > 0 ? channels.map(s => Module.discord.getChannelNameAndID(s.channel)).join(", ") : undefined;
+		await interaction.editReply({embeds: [new EmbedBuilder()
+			.setTitle(`:notepad_spiral: Все гостевые голосовые каналы`)
+			.setDescription(channels.length > 0 ? channels.map((s, i) => `${i + 1}. <#${s.channel.id}>: ${s.channel.members.size}${s.channel.userLimit === 0 ? "" : ` из ${s.channel.userLimit}`} участников`).join("\n") : "*пусто*")
 			.setColor("#77b255")
-			.setFooter({text: `Время обработки: ${Core.humanizeDuration(Date.now() - start)}`})
+			.setFooter({text: `Время обработки: ${Module.core.humanizeDuration(Date.now() - start)}`})
 		]});
 		Module.log.info(`Command ${interaction.commandName} success`, {args});
 	}
 	catch(error) {
-		await interaction.editReply({embeds: [new Discord.EmbedBuilder()
+		await interaction.editReply({embeds: [new EmbedBuilder()
 			.setTitle(`:x: Ошибка!`)
 			.setDescription(`\`\`\`\n${error instanceof Error ? error.message : error}\n\`\`\``)
 			.setColor("#dd2e44")
-			.setFooter({text: `Время обработки: ${Core.humanizeDuration(Date.now() - start)}`})
+			.setFooter({text: `Время обработки: ${Module.core.humanizeDuration(Date.now() - start)}`})
 		]});
 
 		Module.log.error(`Command ${interaction.commandName} failed`, {error, args});
 	}
-});
+}));
