@@ -5,11 +5,10 @@ import { EmbedBuilder } from "discord.js";
 /** That command name used for slash command allowing/banning system, if this will be banned on server, module will stop functioning on this server */
 export default () => Module.discord.slashCommands.make("guest-channels-get", c => c
 .setVersion(1)
+.setType("guild")
 .setDescription(`Sends all guest voice channels`)
 .setDescriptionLocalization("ru", `Отправляет все гостевые голосовые каналы`)
 .setChatInput(async(interaction) => {
-	if (!interaction.inCachedGuild()) return;
-
 	const start = Date.now();
 	await interaction.deferReply();
 

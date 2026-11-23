@@ -4,21 +4,17 @@ import { EmbedBuilder, ChannelType } from "discord.js";
 /** That command name used for slash command allowing/banning system, if this will be banned on server, module will stop functioning on this server */
 export default () => Module.discord.slashCommands.make("guest-channels-remove", c => {c
 .setVersion(1)
+.setType("guild")
 .setDescription(`Removes guest voice channel`)
 .setDescriptionLocalization("ru", `Удаляет гостевой голосовой канал`)
 .setAutocomplete(async(interaction) => {
-	if (interaction.inCachedGuild()) {
-		const state = Module.guilds.get(interaction.guildId);
-		if (state != null) {
-			const focused = interaction.options.getFocused();
-			await interaction.respond(Array.from(state.channels.values()).sort((a, b) => a.channel!.name.indexOf(focused) - b.channel!.name.indexOf(focused)).slice(0, 10).map(s => {return{name: s.channel!.name, value: s.channel!.id}}));
-		}
+	const state = Module.guilds.get(interaction.guildId);
+	if (state != null) {
+		const focused = interaction.options.getFocused();
+		await interaction.respond(Array.from(state.channels.values()).sort((a, b) => a.channel!.name.indexOf(focused) - b.channel!.name.indexOf(focused)).slice(0, 10).map(s => {return{name: s.channel!.name, value: s.channel!.id}}));
 	}
-	await interaction.respond([]);
 })
 .setChatInput(async(interaction) => {
-	if (!interaction.inCachedGuild()) return;
-
 	const start = Date.now();
 	await interaction.deferReply();
 

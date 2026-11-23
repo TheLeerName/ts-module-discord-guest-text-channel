@@ -3,11 +3,10 @@ import { EmbedBuilder, ChannelType } from "discord.js";
 
 export default () => Module.discord.slashCommands.make("guest-channels-add", c => {c
 .setVersion(1)
+.setType("guild")
 .setDescription(`Adds guest voice channel: when user moved to this channel, they gain some permissions`)
 .setDescriptionLocalization("ru", `Добавляет гостевой голосовой канал: когда юзер заходит в этот канал, он получает права видеть его`)
 .setChatInput(async(interaction) => {
-	if (!interaction.inCachedGuild()) return;
-
 	const start = Date.now();
 	await interaction.deferReply();
 
